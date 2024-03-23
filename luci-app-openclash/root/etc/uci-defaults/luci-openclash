@@ -202,9 +202,9 @@ add_utun_firewall_zone()
 	local section="$1"
 	local name network
 	config_get "name" "$section" "name" ""
-	config_get "network" "$section" "network" ""
-	if [ "$name" = "lan" ] && [ -z "$(echo $network |grep utun)" ]; then
-		uci -q set firewall."$section".network="$network utun"
+	if [ "$name" = "lan" ]; then
+		uci -q del_list firewall."$section".network="utun"
+		uci -q add_list firewall."$section".network="utun"
 		uci -q commit firewall
 	fi
 }
